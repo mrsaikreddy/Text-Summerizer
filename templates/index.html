@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text Summarizer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #0d970d;
+      color: #fff;
+      text-align: center;
+      padding: 5px;
+      height: fit-content;
+      border-color: rgba(16, 148, 36, 0.792);
+      border-width: 2mm;
+      border-style: double;
+      border-left: #fff;
+      border-right: #fff;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      margin: 2px 0;
+      font-style:oblique;
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+     
+    }
+
+    .header .logo {
+      animation: logo-animation 2s infinite;
+    }
+
+    @keyframes logo-animation {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .container {
+      max-width: 90%;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2px;
+      margin-bottom: 20px;
+    }
+
+    .input-area textarea {
+      width: 96%;
+      height: 200px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #0bc342;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #3e5345;
+    }
+
+    .summary {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 20px;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+    }
+
+    .summary h3 {
+      font-size: 20px;
+      margin-top: 0;
+    }
+
+    .summary p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .word-count {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .copy-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #0bc342;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: opacity 0.3s ease;
+      opacity: 0.8;
+      transition: background-color 0.3s ease;
+    }
+
+    .copy-button:hover {
+        background-color: #3e5345;
+    }
+
+    @keyframes copy-animation {
+      0% {
+        transform: translateY(0);}
+        25% {
+        transform: translateY(-5px);
+      }
+      50% {
+        transform: translateY(0);
+      }
+      75% {
+        transform: translateY(-5px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .copy-button:focus {
+      outline: none;
+      animation: copy-animation 0.5s linear;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1><i class="logo"> <img src="">Text Summarizer</i></h1>
+  </div>
+  <div class="container">
+    <form action="/analyze" method="post">
+      <div class="input-area">
+        <textarea name="rawtext" id="text-input" placeholder="Enter your text here"></textarea>
+      </div>
+      <button type="submit" class="button">Summarize</button>
+    </form>
+    {% if summary %}
+    <div class="summary">
+      <h3>Summary:</h3>
+      <p id="summary-text">{{ summary }}</p>
+      <button class="copy-button" onclick="copySummary()">Copy Text</button>
+    </div>
+    <div class="word-count">
+      <p>Number of words in the original text: <span id="original-word-count">{{ len_original_txt }}</span></p>
+      <p>Number of words in the summary: <span id="summary-word-count">{{ len_summary }}</span></p>
+    </div>
+    {% endif %}
+  </div>
+  <script>
+    function copySummary() {
+      var summaryText = document.getElementById("summary-text");
+      var tempInput = document.createElement("textarea");
+      tempInput.value = summaryText.textContent;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      alert("Summary text copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
+
